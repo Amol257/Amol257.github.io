@@ -100,7 +100,8 @@
             font-family: var(--font-mono); font-size: 0.8rem;
             text-transform: uppercase; letter-spacing: 2px;
         }
-        .section-num { color: var(--muted); min-width: 40px; }
+        .section-num { color: var(--muted); min-width: 40px; transition: color 0.3s; }
+        .section-num.active { color: var(--accent); }
 
         /* Hero */
         #hero {
@@ -153,9 +154,10 @@
         /* About */
         #about { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; }
         .about-left {
-            display: flex; flex-direction: column; gap: 70px;
+            display: flex; flex-direction: column; gap: 50px;
             border-right: 2px solid var(--accent); padding-right: 60px;
         }
+        .stats-row { display: flex; flex-direction: column; gap: 40px; }
         .stat-block { display: flex; flex-direction: column; gap: 8px; }
         .stat-num { font-family: var(--font-display); font-size: clamp(55px, 9vw, 110px); line-height: 1; }
         .stat-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; }
@@ -302,7 +304,8 @@
             .hero-top { flex-direction: column; gap: 16px; }
             .hero-tagline-row { flex-direction: column; gap: 16px; }
             #about { grid-template-columns: 1fr; gap: 50px; }
-            .about-left { border-right: none; border-bottom: 2px solid var(--accent); padding-right: 0; padding-bottom: 50px; flex-direction: row; justify-content: space-around; gap: 30px; }
+            .about-left { border-right: none; border-bottom: 2px solid var(--accent); padding-right: 0; padding-bottom: 50px; flex-direction: column; gap: 40px; }
+            .stats-row { flex-direction: row; justify-content: space-around; gap: 20px; }
             .skill-row { grid-template-columns: 170px 1fr; gap: 20px; }
             .exp-header { grid-template-columns: 48px 1fr auto; gap: 14px; }
             .exp-date { grid-column: 3; text-align: right; }
@@ -336,17 +339,21 @@
             .hero-bottom { padding-top: 24px; }
 
             /* About */
-            #about { grid-template-columns: 1fr; gap: 36px; padding-top: 72px; }
+            #about { grid-template-columns: 1fr; gap: 0; padding-top: 72px; }
             .about-left {
-                flex-direction: row; flex-wrap: wrap;
-                justify-content: space-between;
-                border-right: none; border-bottom: 1px solid var(--border);
-                padding-right: 0; padding-bottom: 32px; gap: 24px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding-right: 0; padding-bottom: 32px;
+                gap: 28px; flex-direction: column;
             }
-            .stat-block { flex: 1; min-width: 120px; }
-            .stat-num { font-size: clamp(42px, 12vw, 80px); }
-            .bio-text { font-size: 1.15rem; }
-            .bio-sub { font-size: 0.95rem; }
+            .stats-row { flex-direction: row; justify-content: space-between; gap: 12px; }
+            .stat-block { flex: 1; min-width: 0; }
+            .stat-num { font-size: clamp(36px, 10vw, 64px); }
+            .stat-label { font-size: 0.62rem; letter-spacing: 1px; }
+            .about-right { padding-top: 28px; gap: 16px; }
+            .bio-text { font-size: 1.1rem; }
+            .bio-sub { font-size: 0.9rem; }
+            .fact-list { font-size: 0.82rem; gap: 10px; }
 
             /* Skills */
             .skill-row {
@@ -474,17 +481,19 @@
                 <span class="section-num">[02]</span>
                 <span class="section-title">ABOUT</span>
             </div>
-            <div class="stat-block">
-                <span class="stat-num" data-target="3">0</span>
-                <span class="stat-label">Internships</span>
-            </div>
-            <div class="stat-block">
-                <span class="stat-num" data-target="20">0</span>
-                <span class="stat-label">% Reporting Time Saved</span>
-            </div>
-            <div class="stat-block">
-                <span class="stat-num" data-target="6">0</span>
-                <span class="stat-label">Certifications</span>
+            <div class="stats-row">
+                <div class="stat-block">
+                    <span class="stat-num" data-target="3">0</span>
+                    <span class="stat-label">Internships</span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-num" data-target="20">0</span>
+                    <span class="stat-label">% Time Saved</span>
+                </div>
+                <div class="stat-block">
+                    <span class="stat-num" data-target="6">0</span>
+                    <span class="stat-label">Certifications</span>
+                </div>
             </div>
         </div>
         <div class="about-right">
@@ -499,10 +508,6 @@
                 <div class="fact-item"><span class="arrow">→</span><span>Reduced NCRTC reporting time by 20-25% with automated Power BI pipelines</span></div>
                 <div class="fact-item"><span class="arrow">→</span><span>Dashboards live on a national government portal</span></div>
                 <div class="fact-item"><span class="arrow">→</span><span>Based in Ghaziabad · Open to remote and hybrid roles</span></div>
-            </div>
-            <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;">
-                <a href="https://www.linkedin.com/in/amol-singhal257/" target="_blank" class="contact-link">[ LINKEDIN ↗ ]</a>
-                <a href="mailto:amol.singhal25@gmail.com" class="contact-link">[ EMAIL ↗ ]</a>
             </div>
         </div>
     </section>
@@ -857,6 +862,23 @@
             clearInterval(cycleInterval);
             headline.textContent = "LET'S WORK.";
         });
+
+        // Section number highlight on scroll
+        const sections = $$('section[id]');
+        const sectionNums = $$('.section-num');
+        const sectionObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                // Remove active from all
+                sectionNums.forEach(n => n.classList.remove('active'));
+                // Find matching section-num by index
+                const idx = Array.from(sections).indexOf(entry.target);
+                if (idx >= 0 && sectionNums[idx]) {
+                    sectionNums[idx].classList.add('active');
+                }
+            });
+        }, { threshold: 0.3, rootMargin: '-20% 0px -60% 0px' });
+        sections.forEach(s => sectionObserver.observe(s));
 
         // Email copy
         $('#email-btn').addEventListener('click', () => {
