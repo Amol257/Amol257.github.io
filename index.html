@@ -64,8 +64,42 @@
             font-family: var(--font-display);
             font-size: clamp(4rem, 15vw, 10rem);
             color: var(--ink); letter-spacing: 2px; white-space: nowrap; line-height: 1;
+            min-height: 1.1em;
         }
-        #loader-line { width: 0; height: 3px; background: var(--accent); margin-top: 20px; }
+        #loader-line {
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+        #loader-line::after {
+            content: '';
+            display: block;
+            height: 100%;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: center;
+        }
+        #loader-line.active::after {
+            animation: lineExpand 0.8s ease forwards;
+        }
+        #loader-cursor {
+            display: inline-block;
+            width: 3px; height: 0.75em;
+            background: var(--accent);
+            margin-left: 6px;
+            vertical-align: middle;
+            animation: blink 0.7s step-end infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes lineExpand {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+        #loader-line.active {
+            animation: lineExpand 0.8s ease forwards;
+        }
 
         /* Scroll progress */
         #scroll-progress {
@@ -395,17 +429,18 @@
 
         /* Responsive — Mobile */
         @media (max-width: 768px) {
+            /* Loader */
+            #loader-text { font-size: clamp(2.4rem, 11vw, 5rem); letter-spacing: 1px; }
+            #loader-line { height: 2px; margin-top: 12px; }
+
             /* Nav */
-            nav {
-                padding: 14px 18px;
-                font-size: 0.62rem;
-            }
+            nav { padding: 14px 18px; font-size: 0.62rem; }
             .nav-right span { display: none; }
             .nav-right { gap: 8px; }
 
             /* Sections */
-            section { padding: 72px 18px; }
-            .section-header { margin-bottom: 36px; gap: 12px; font-size: 0.72rem; }
+            section { padding: 64px 18px; }
+            .section-header { margin-bottom: 32px; gap: 12px; font-size: 0.72rem; }
 
             /* Hero */
             #hero { padding: 0 18px; padding-top: 70px; padding-bottom: 36px; min-height: 100svh; }
@@ -414,9 +449,10 @@
             .hero-main { margin: 36px 0; }
             .hero-tagline-row { flex-direction: column; gap: 12px; font-size: 0.75rem; }
             .hero-bottom { padding-top: 24px; }
+            .hero-divider { margin-bottom: 18px; }
 
             /* About */
-            #about { grid-template-columns: 1fr; gap: 0; padding-top: 72px; }
+            #about { grid-template-columns: 1fr; gap: 0; padding-top: 64px; }
             .about-left {
                 border-right: none;
                 border-bottom: 1px solid var(--border);
@@ -428,89 +464,157 @@
             .stat-num { font-size: clamp(36px, 10vw, 64px); }
             .stat-label { font-size: 0.62rem; letter-spacing: 1px; }
             .about-right { padding-top: 28px; gap: 16px; }
-            .bio-text { font-size: 1.1rem; }
-            .bio-sub { font-size: 0.9rem; }
+            .bio-text { font-size: 1.05rem; line-height: 1.6; }
+            .bio-sub { font-size: 0.88rem; }
             .fact-list { font-size: 0.82rem; gap: 10px; }
 
             /* Skills */
-            .skill-row {
-                grid-template-columns: 1fr;
-                gap: 10px; padding: 22px 0;
-            }
+            .skill-row { grid-template-columns: 1fr; gap: 10px; padding: 22px 0; }
             .skill-row:hover { padding-left: 12px; padding-right: 12px; margin-left: -12px; margin-right: -12px; }
             .skill-cat { font-size: clamp(1.4rem, 6vw, 2rem); }
             .skill-list { font-size: 0.82rem; gap: 6px; }
 
             /* Experience */
-            .exp-header {
-                grid-template-columns: 1fr;
-                gap: 6px; padding: 24px 0;
-            }
+            .exp-header { grid-template-columns: 1fr; gap: 6px; padding: 24px 0; }
             .exp-id { display: none; }
             .exp-company { font-size: clamp(1.4rem, 6vw, 2rem); }
             .exp-role { grid-column: 1; font-size: 0.8rem; }
             .exp-date { grid-column: 1; text-align: left; font-size: 0.75rem; }
             .exp-content { padding: 0 16px !important; }
             .exp-row.active .exp-content { padding: 24px 16px !important; }
-            .exp-bullets li { font-size: 0.85rem; }
+            .exp-bullets li { font-size: 0.85rem; line-height: 1.5; }
             .tech-tags { gap: 6px; }
             .tag { padding: 5px 10px; font-size: 0.65rem; }
 
             /* Projects */
-            .project-row { padding: 32px 0; }
-            .project-row:hover { padding-left: 12px; }
-            .project-main { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
-            .project-name { font-size: clamp(1.8rem, 8vw, 3rem); }
-            .project-meta { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .project-row { padding: 28px 0; }
+            /* Disable hover transform on touch — use tap/click instead */
+            .project-row:hover { transform: none; border-left: none; padding-left: 0; }
+            .project-row.open { border-left: 4px solid var(--accent); padding-left: 12px; }
+            .project-main { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+            .project-name { font-size: clamp(1.6rem, 7vw, 2.8rem); letter-spacing: -0.5px; }
+            .project-year { font-size: 0.78rem; }
+            .project-meta { flex-direction: column; align-items: flex-start; gap: 6px; font-size: 0.78rem; }
+            .project-toggle-hint { font-size: 0.65rem; margin-top: 8px; }
+            /* Project desc panel */
+            .project-desc-inner { grid-template-columns: 1fr; }
+            .project-desc-left { border-right: none; border-bottom: 2px solid var(--accent); padding: 20px 0; }
+            .project-desc-right { padding: 20px 0; }
+            .project-impact-line { font-size: clamp(1.1rem, 4vw, 1.5rem); }
+            .project-story { font-size: 0.72rem; }
+            .project-desc-tags { gap: 6px; }
+            /* Disable data-bg background image on mobile (no hover) */
+            .project-bg { display: none; }
 
             /* Education */
-            .edu-item {
-                grid-template-columns: 1fr;
-                gap: 6px; padding: 20px 0;
-            }
+            .edu-item { grid-template-columns: 1fr; gap: 6px; padding: 20px 0; }
             .edu-degree { font-size: 0.85rem; }
             .edu-school { font-size: 0.8rem; }
             .edu-year { text-align: left; font-size: 0.8rem; }
-
-            /* Certs */
             .certs-grid { grid-template-columns: 1fr; gap: 8px; }
             .cert-chip { font-size: 0.72rem; padding: 14px; }
             .certs-title { font-size: 1.3rem; margin-bottom: 24px; }
+            .certs-container { margin-top: 36px; }
 
             /* Contact */
-            #contact { gap: 24px; padding: 72px 18px; min-height: auto; }
-            .contact-headline { font-size: clamp(42px, 12vw, 90px); letter-spacing: -1px; }
+            #contact { gap: 20px; padding: 64px 18px; min-height: auto; }
+            .contact-headline { font-size: clamp(38px, 11vw, 80px); letter-spacing: -1px; }
             .contact-main { flex-direction: column; gap: 14px; font-size: 0.9rem; }
             .contact-email { font-size: 0.85rem; word-break: break-all; }
-            .contact-info { gap: 12px; font-size: 0.72rem; flex-direction: column; align-items: center; }
+            .contact-info { gap: 10px; font-size: 0.72rem; flex-direction: column; align-items: center; }
             .contact-links { gap: 10px; flex-direction: column; align-items: center; width: 100%; }
             .contact-link { width: 100%; text-align: center; padding: 13px 16px; font-size: 0.72rem; }
             .cta-btn { width: 100%; padding: 13px 16px; font-size: 0.8rem; }
 
+            /* Marquee */
+            .marquee-content { font-size: clamp(18px, 5vw, 26px); }
+
             /* Footer */
-            footer {
-                flex-direction: column; gap: 12px;
-                text-align: center; padding: 28px 18px;
-                font-size: 0.68rem;
-            }
+            footer { flex-direction: column; gap: 12px; text-align: center; padding: 28px 18px; font-size: 0.68rem; }
         }
 
         /* Responsive — Small phones */
         @media (max-width: 390px) {
+            #loader-text { font-size: clamp(2rem, 10vw, 3.5rem); }
             .hero-headline { font-size: clamp(32px, 10vw, 56px); }
-            .contact-headline { font-size: clamp(36px, 11vw, 60px); }
-            .stat-num { font-size: clamp(36px, 11vw, 64px); }
+            .contact-headline { font-size: clamp(32px, 10vw, 56px); }
+            .stat-num { font-size: clamp(32px, 10vw, 56px); }
             .bio-text { font-size: 1rem; }
+            .project-name { font-size: clamp(1.4rem, 7vw, 2.2rem); }
+            section { padding: 56px 14px; }
+        }
+        /* Background canvases */
+        #canvas-particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -3;
+        }
+
+        /* Hero grid canvas */
+        #canvas-grid {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            animation: gridFadeIn 2s 1.8s ease forwards;
+        }
+        @keyframes gridFadeIn { to { opacity: 1; } }
+
+        /* Hero z-index stacking */
+        #hero { position: relative; }
+        #hero > *:not(#canvas-grid) { position: relative; z-index: 1; }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-content { animation: none; }
+            .hero-headline span { transition: none; transform: translateY(0) !important; }
+            .project-desc { transition: none; }
+            #loader-line { transition: none; }
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+
+        /* Focus rings for keyboard nav */
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        /* Project toggle arrow icon */
+        .project-toggle-icon {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--muted);
+            transition: transform 0.4s ease, color 0.3s;
+            display: inline-block;
+            margin-left: 14px;
+            vertical-align: middle;
+        }
+        .project-row.open .project-toggle-icon { transform: rotate(180deg); color: var(--accent); }
+        .project-row:hover .project-toggle-icon { color: var(--accent); }
+
+        /* Contact email as link */
+        a.contact-email { color: var(--ink); transition: color 0.2s; }
+        a.contact-email:hover { color: var(--accent); }
+
+        /* Mobile project desc fix */
+        @media (max-width: 768px) {
+            .project-desc-inner { padding: 0 4px; }
+            .project-story { font-size: 0.72rem; }
         }
     </style>
 </head>
 <body>
 
+    <canvas id="canvas-particles"></canvas>
     <div id="scroll-progress"></div>
     <div id="cursor"></div>
 
     <div id="loader">
-        <div id="loader-text">AMOL SINGHAL</div>
+        <div id="loader-text"><span id="loader-cursor"></span></div>
         <div id="loader-line"></div>
     </div>
 
@@ -524,6 +628,7 @@
 
     <!-- HERO -->
     <section id="hero">
+        <canvas id="canvas-grid"></canvas>
         <div class="hero-top">
             <div>[01]</div>
             <div>[GZB · INDIA]</div>
@@ -911,27 +1016,33 @@
         const $$ = s => document.querySelectorAll(s);
 
         // Loader
-        window.addEventListener('load', () => {
+        const LOADER_NAME = 'AMOL SINGHAL';
+
+        function startLoader() {
             const loader = $('#loader');
             const loaderText = $('#loader-text');
+            const loaderCursor = $('#loader-cursor');
             const loaderLine = $('#loader-line');
-            const orig = loaderText.textContent;
-            loaderText.textContent = '';
             let i = 0;
             const type = setInterval(() => {
-                if (i < orig.length) { loaderText.textContent += orig[i++]; }
-                else {
+                if (i < LOADER_NAME.length) {
+                    // Insert text before the cursor span
+                    loaderCursor.insertAdjacentText('beforebegin', LOADER_NAME[i++]);
+                } else {
                     clearInterval(type);
-                    loaderLine.style.transition = 'width 0.8s ease';
-                    loaderLine.style.width = '100%';
+                    loaderCursor.style.display = 'none';
+                    loaderLine.classList.add('active');
                     setTimeout(() => {
                         loader.style.transition = 'transform 1s cubic-bezier(0.19, 1, 0.22, 1)';
                         loader.style.transform = 'translateY(-100%)';
                         animateHero();
                     }, 900);
                 }
-            }, 50);
-        });
+            }, 80);
+        }
+
+        // Small delay ensures fonts are painted and animation is always visible
+        setTimeout(startLoader, 120);
 
         function animateHero() {
             $$('.hero-headline span').forEach((span, i) => {
@@ -1001,6 +1112,7 @@
 
         // Project click expand + hover bg
         const projectBg = $('#project-bg');
+        const isTouchDevice = () => window.matchMedia('(hover: none)').matches;
         $$('.project-row').forEach(row => {
             row.addEventListener('click', () => {
                 const isOpen = row.classList.contains('open');
@@ -1008,10 +1120,14 @@
                 if (!isOpen) row.classList.add('open');
             });
             row.addEventListener('mouseenter', () => {
+                if (isTouchDevice() || !projectBg) return;
                 projectBg.style.backgroundImage = `url(${row.dataset.bg})`;
                 projectBg.style.opacity = '1';
             });
-            row.addEventListener('mouseleave', () => projectBg.style.opacity = '0');
+            row.addEventListener('mouseleave', () => {
+                if (isTouchDevice() || !projectBg) return;
+                projectBg.style.opacity = '0';
+            });
         });
 
         // Contact headline cycle
@@ -1066,6 +1182,175 @@
                 }, 2000);
             });
         });
+        // ── EFFECT 1: Floating Particle Network ──────────────────────────────
+        (function() {
+            const canvas = document.getElementById('canvas-particles');
+            const ctx = canvas.getContext('2d');
+            const COLOR = 'rgba(240,236,228,0.15)';
+            const NODE_COUNT = 18;
+            let nodes = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            for (let i = 0; i < NODE_COUNT; i++) {
+                nodes.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    vx: (Math.random() - 0.5) * 0.28,
+                    vy: (Math.random() - 0.5) * 0.28,
+                    r: Math.random() * 2 + 1
+                });
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                nodes.forEach(n => {
+                    n.x += n.vx; n.y += n.vy;
+                    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+                    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+                });
+                for (let i = 0; i < nodes.length; i++) {
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x;
+                        const dy = nodes[i].y - nodes[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 280) {
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = `rgba(240,236,228,${0.18 * (1 - dist / 280)})`;
+                            ctx.lineWidth = 0.8;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                nodes.forEach(n => {
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                    ctx.fillStyle = COLOR;
+                    ctx.fill();
+                });
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ── EFFECT 3: Perspective Grid ────────────────────────────────────────
+        (function() {
+            const canvas = document.getElementById('canvas-grid');
+            const ctx = canvas.getContext('2d');
+            let phase = 0;
+            let mouseX = 0.5, mouseY = 0.5;
+            let targetMX = 0.5, targetMY = 0.5;
+
+            window.addEventListener('mousemove', e => {
+                targetMX = e.clientX / window.innerWidth;
+                targetMY = e.clientY / window.innerHeight;
+            });
+
+            function resize() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            function drawLine(x1, y1, x2, y2, alpha, width, accent) {
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                if (accent) {
+                    ctx.strokeStyle = `rgba(200,255,0,${alpha})`;
+                } else {
+                    ctx.strokeStyle = `rgba(240,236,228,${alpha})`;
+                }
+                ctx.lineWidth = width;
+                ctx.stroke();
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Smooth mouse lerp
+                mouseX += (targetMX - mouseX) * 0.04;
+                mouseY += (targetMY - mouseY) * 0.04;
+
+                const W = canvas.width;
+                const H = canvas.height;
+
+                // Vanishing point follows mouse subtly
+                const vpX = W * (0.5 + (mouseX - 0.5) * 0.12);
+                const vpY = H * (0.62 + (mouseY - 0.5) * 0.06);
+
+                const VCOLS = 18;  // vertical lines fanning from vp
+                const HROWS = 10;  // horizontal lines
+                const pulse = Math.sin(phase) * 0.5 + 0.5; // 0..1
+
+                // Draw horizontal lines (receding into vp)
+                for (let r = 0; r <= HROWS; r++) {
+                    // Lines appear from bottom up
+                    const t = r / HROWS;
+                    // y starts near bottom, converges toward vp
+                    const y = vpY + (H * 1.1 - vpY) * (1 - t * 0.85);
+                    // alpha: lines near bottom are brighter, fade toward horizon
+                    const proximity = t; // 0=bottom, 1=horizon
+                    const baseAlpha = (1 - proximity) * 0.18 + 0.02;
+                    const isAccent = r === Math.floor(pulse * HROWS * 0.4 + 1);
+                    const alpha = isAccent ? 0.55 : baseAlpha;
+                    const lw = isAccent ? 1.2 : (1 - proximity) * 0.9 + 0.3;
+
+                    // x extent narrows as we go toward horizon
+                    const spread = (1 - proximity * 0.7);
+                    const x0 = W * (0.5 - spread * 0.7);
+                    const x1 = W * (0.5 + spread * 0.7);
+
+                    drawLine(x0, y, x1, y, alpha, lw, isAccent);
+                }
+
+                // Draw vertical lines fanning from vanishing point
+                for (let c = 0; c <= VCOLS; c++) {
+                    const t = c / VCOLS; // 0..1
+                    // spread fan across bottom
+                    const bx = W * (t * 1.1 - 0.05);
+                    const by = H * 1.05;
+
+                    const distFromCenter = Math.abs(t - 0.5) * 2; // 0=center, 1=edge
+                    const baseAlpha = (1 - distFromCenter * 0.7) * 0.12 + 0.02;
+
+                    // Accent travels as a sweep
+                    const sweepT = (Math.sin(phase * 0.7 + c * 0.3) * 0.5 + 0.5);
+                    const isAccent = Math.abs(t - sweepT) < 0.04;
+                    const alpha = isAccent ? 0.5 : baseAlpha;
+                    const lw = isAccent ? 1.1 : 0.5;
+
+                    drawLine(vpX, vpY, bx, by, alpha, lw, isAccent);
+                }
+
+                // Subtle horizon glow line
+                const horizonY = vpY;
+                const gradH = ctx.createLinearGradient(0, horizonY, W, horizonY);
+                gradH.addColorStop(0, 'rgba(200,255,0,0)');
+                gradH.addColorStop(0.3, `rgba(200,255,0,${0.06 + pulse * 0.06})`);
+                gradH.addColorStop(0.5, `rgba(200,255,0,${0.12 + pulse * 0.08})`);
+                gradH.addColorStop(0.7, `rgba(200,255,0,${0.06 + pulse * 0.06})`);
+                gradH.addColorStop(1, 'rgba(200,255,0,0)');
+                ctx.beginPath();
+                ctx.moveTo(0, horizonY);
+                ctx.lineTo(W, horizonY);
+                ctx.strokeStyle = gradH;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                phase += 0.012;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
     </script>
 </body>
 </html>
