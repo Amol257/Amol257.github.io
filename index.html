@@ -233,6 +233,83 @@
             filter: brightness(0.15) grayscale(1);
         }
 
+        /* Project Description Panel */
+        .project-desc {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            opacity: 0;
+        }
+        .project-row.open .project-desc {
+            max-height: 400px;
+            opacity: 1;
+        }
+        .project-desc-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border-top: 1px solid var(--border);
+            margin-top: 24px;
+        }
+        .project-desc-left {
+            padding: 28px 32px 28px 0;
+            border-right: 3px solid var(--accent);
+        }
+        .project-desc-right {
+            padding: 28px 0 28px 32px;
+        }
+        .project-impact-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        .project-impact-line {
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-bottom: 18px;
+        }
+        .project-story {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: rgba(240,236,228,0.6);
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .project-story span { display: flex; gap: 10px; }
+        .project-story .story-label { color: var(--accent); flex-shrink: 0; min-width: 60px; }
+        .project-desc-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        .project-toggle-hint {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 12px;
+            transition: color 0.3s;
+        }
+        .project-row:hover .project-toggle-hint { color: var(--accent); }
+        .project-row.open .project-toggle-hint::after { content: ' [ — CLOSE ]'; }
+        .project-row:not(.open) .project-toggle-hint::after { content: ' [ + EXPAND ]'; }
+
+        @media (max-width: 768px) {
+            .project-desc-inner { grid-template-columns: 1fr; }
+            .project-desc-left { border-right: none; border-bottom: 2px solid var(--accent); padding: 20px 0; }
+            .project-desc-right { padding: 20px 0; }
+        }
+
         /* Education */
         .edu-grid { display: flex; flex-direction: column; }
         .edu-item { display: grid; grid-template-columns: 1fr 1fr 150px; gap: 30px; font-family: var(--font-mono); border-bottom: 1px solid var(--border); padding: 28px 0; align-items: center; }
@@ -652,7 +729,33 @@
             </div>
             <div class="project-meta">
                 <div class="project-tags">NCRTC · Power BI · DAX · SQL</div>
-                <a href="https://pm-ebus-sewa.mohua.gov.in/" target="_blank" class="view-link">[ VIEW ↗ ]</a>
+                <a href="https://pm-ebus-sewa.mohua.gov.in/" target="_blank" class="view-link" onclick="event.stopPropagation()">[ VIEW ↗ ]</a>
+            </div>
+            <div class="project-toggle-hint"></div>
+            <div class="project-desc">
+                <div class="project-desc-inner">
+                    <div class="project-desc-left">
+                        <div class="project-impact-label">Impact</div>
+                        <div class="project-impact-line">Cut reporting time by 20–25% across a national fleet program</div>
+                        <div class="project-story">
+                            <span><span class="story-label">BEFORE</span>Manual Excel reports took hours per cycle across NCRTC's PM-eBus Sewa fleet operations</span>
+                            <span><span class="story-label">PROBLEM</span>No real-time KPI visibility for ministry-level stakeholders managing 6000+ buses</span>
+                            <span><span class="story-label">FIX</span>Built automated Power BI dashboards with advanced DAX, connected to live SQL pipelines</span>
+                            <span><span class="story-label">RESULT</span>20–25% reduction in reporting time, dashboards live on national government portal</span>
+                        </div>
+                    </div>
+                    <div class="project-desc-right">
+                        <div class="project-impact-label">Stack</div>
+                        <div class="project-desc-tags">
+                            <span class="tag">Power BI</span>
+                            <span class="tag">DAX</span>
+                            <span class="tag">SQL</span>
+                            <span class="tag">Excel</span>
+                            <span class="tag">Power Query</span>
+                            <span class="tag">Data Modeling</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="project-row" data-bg="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&q=80&w=1000">
@@ -662,7 +765,33 @@
             </div>
             <div class="project-meta">
                 <div class="project-tags">Python · SQL · Data Viz · AI-Powered · Real-time Analytics</div>
-                <a href="https://amol257.github.io/india-aqi-dashboard/" class="view-link">[ VIEW ↗ ]</a>
+                <a href="https://amol257.github.io/india-aqi-dashboard/" target="_blank" class="view-link" onclick="event.stopPropagation()">[ VIEW ↗ ]</a>
+            </div>
+            <div class="project-toggle-hint"></div>
+            <div class="project-desc">
+                <div class="project-desc-inner">
+                    <div class="project-desc-left">
+                        <div class="project-impact-label">Impact</div>
+                        <div class="project-impact-line">Real-time AQI intelligence across 511 stations in 28 states</div>
+                        <div class="project-story">
+                            <span><span class="story-label">BEFORE</span>Air quality data across India was fragmented, with no unified real-time health risk view</span>
+                            <span><span class="story-label">PROBLEM</span>14.3% of population in high-exposure zones with no accessible public health dashboard</span>
+                            <span><span class="story-label">FIX</span>Built AI-powered dashboard aggregating 511 monitoring stations with Gemini AI health insights</span>
+                            <span><span class="story-label">RESULT</span>Live national AQI tracker with daily, weekly, monthly views and medical alert load metrics</span>
+                        </div>
+                    </div>
+                    <div class="project-desc-right">
+                        <div class="project-impact-label">Stack</div>
+                        <div class="project-desc-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">SQL</span>
+                            <span class="tag">AI-Powered</span>
+                            <span class="tag">Real-time Analytics</span>
+                            <span class="tag">Data Viz</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="project-row" data-bg="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000">
@@ -671,8 +800,33 @@
                 <div class="project-year">2024</div>
             </div>
             <div class="project-meta">
-                <div class="project-tags">Internship Studio · Web Design · UX</div>
-                <a href="#" class="view-link">[ VIEW ↗ ]</a>
+                <div class="project-tags">Excel · UX Analytics · Data-Driven Design · HTML/CSS</div>
+                <a href="#" class="view-link" onclick="event.stopPropagation()">[ VIEW ↗ ]</a>
+            </div>
+            <div class="project-toggle-hint"></div>
+            <div class="project-desc">
+                <div class="project-desc-inner">
+                    <div class="project-desc-left">
+                        <div class="project-impact-label">Impact</div>
+                        <div class="project-impact-line">Data-driven UX decisions reduced checkout drop-off</div>
+                        <div class="project-story">
+                            <span><span class="story-label">BEFORE</span>eCommerce site built without data insight into where users were dropping off in the funnel</span>
+                            <span><span class="story-label">PROBLEM</span>No visibility into page engagement or drop-off points across product and checkout pages</span>
+                            <span><span class="story-label">FIX</span>Applied Excel pivot analysis to user flow data to identify friction points and redesign layouts</span>
+                            <span><span class="story-label">RESULT</span>Improved page engagement metrics and pixel-perfect responsive product built from scratch</span>
+                        </div>
+                    </div>
+                    <div class="project-desc-right">
+                        <div class="project-impact-label">Stack</div>
+                        <div class="project-desc-tags">
+                            <span class="tag">HTML / CSS</span>
+                            <span class="tag">Excel</span>
+                            <span class="tag">Figma</span>
+                            <span class="tag">Photoshop</span>
+                            <span class="tag">UX Analytics</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="project-bg" id="project-bg"></div>
@@ -834,9 +988,14 @@
             });
         });
 
-        // Project hover bg
+        // Project click expand + hover bg
         const projectBg = $('#project-bg');
         $$('.project-row').forEach(row => {
+            row.addEventListener('click', () => {
+                const isOpen = row.classList.contains('open');
+                $$('.project-row').forEach(r => r.classList.remove('open'));
+                if (!isOpen) row.classList.add('open');
+            });
             row.addEventListener('mouseenter', () => {
                 projectBg.style.backgroundImage = `url(${row.dataset.bg})`;
                 projectBg.style.opacity = '1';
