@@ -1186,32 +1186,41 @@
         (function() {
             const canvas = document.getElementById('canvas-particles');
             const ctx = canvas.getContext('2d');
-            const COLOR = 'rgba(240,236,228,0.15)';
-            const NODE_COUNT = 18;
             let nodes = [];
+
+            function isMobile() { return window.innerWidth <= 768; }
 
             function resize() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
+                const count = isMobile() ? 10 : 18;
+                nodes = [];
+                for (let i = 0; i < count; i++) {
+                    nodes.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.28,
+                        vy: (Math.random() - 0.5) * 0.28,
+                        r: Math.random() * 2 + 1
+                    });
+                }
             }
             resize();
             window.addEventListener('resize', resize);
 
-            for (let i = 0; i < NODE_COUNT; i++) {
-                nodes.push({
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                    vx: (Math.random() - 0.5) * 0.28,
-                    vy: (Math.random() - 0.5) * 0.28,
-                    r: Math.random() * 2 + 1
-                });
-            }
-
             function draw() {
+                const mobile = isMobile();
+                const hero = document.getElementById('hero');
+                const inHero = mobile && hero && window.scrollY < hero.offsetHeight;
+                const CONNECT_DIST = mobile ? 120 : 280;
+                const LINE_W      = mobile ? 0.8  : 0.8;
+                const MAX_ALPHA   = inHero ? 0.06 : 0.18;
+                const NODE_COLOR  = inHero ? 'rgba(240,236,228,0.05)' : 'rgba(240,236,228,0.15)';
+
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 nodes.forEach(n => {
                     n.x += n.vx; n.y += n.vy;
-                    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+                    if (n.x < 0 || n.x > canvas.width)  n.vx *= -1;
                     if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
                 });
                 for (let i = 0; i < nodes.length; i++) {
@@ -1219,12 +1228,12 @@
                         const dx = nodes[i].x - nodes[j].x;
                         const dy = nodes[i].y - nodes[j].y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 280) {
+                        if (dist < CONNECT_DIST) {
                             ctx.beginPath();
                             ctx.moveTo(nodes[i].x, nodes[i].y);
                             ctx.lineTo(nodes[j].x, nodes[j].y);
-                            ctx.strokeStyle = `rgba(240,236,228,${0.18 * (1 - dist / 280)})`;
-                            ctx.lineWidth = 0.8;
+                            ctx.strokeStyle = `rgba(240,236,228,${MAX_ALPHA * (1 - dist / CONNECT_DIST)})`;
+                            ctx.lineWidth = LINE_W;
                             ctx.stroke();
                         }
                     }
@@ -1232,7 +1241,7 @@
                 nodes.forEach(n => {
                     ctx.beginPath();
                     ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-                    ctx.fillStyle = COLOR;
+                    ctx.fillStyle = NODE_COLOR;
                     ctx.fill();
                 });
                 requestAnimationFrame(draw);
@@ -1247,6 +1256,8 @@
             let phase = 0;
             let mouseX = 0.5, mouseY = 0.5;
             let targetMX = 0.5, targetMY = 0.5;
+
+            function isMobile() { return window.innerWidth <= 768; }
 
             window.addEventListener('mousemove', e => {
                 targetMX = e.clientX / window.innerWidth;
@@ -1264,11 +1275,9 @@
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
-                if (accent) {
-                    ctx.strokeStyle = `rgba(200,255,0,${alpha})`;
-                } else {
-                    ctx.strokeStyle = `rgba(240,236,228,${alpha})`;
-                }
+                ctx.strokeStyle = accent
+                    ? `rgba(200,255,0,${alpha})`
+                    : `rgba(240,236,228,${alpha})`;
                 ctx.lineWidth = width;
                 ctx.stroke();
             }
@@ -1276,69 +1285,52 @@
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Smooth mouse lerp
+                const mobile = isMobile();
                 mouseX += (targetMX - mouseX) * 0.04;
                 mouseY += (targetMY - mouseY) * 0.04;
 
                 const W = canvas.width;
                 const H = canvas.height;
-
-                // Vanishing point follows mouse subtly
                 const vpX = W * (0.5 + (mouseX - 0.5) * 0.12);
                 const vpY = H * (0.62 + (mouseY - 0.5) * 0.06);
 
-                const VCOLS = 18;  // vertical lines fanning from vp
-                const HROWS = 10;  // horizontal lines
-                const pulse = Math.sin(phase) * 0.5 + 0.5; // 0..1
+                // On mobile: fewer lines to avoid overlap with hero text
+                const VCOLS      = mobile ? 8  : 18;
+                const HROWS      = mobile ? 5  : 10;
+                const pulse = Math.sin(phase) * 0.5 + 0.5;
 
-                // Draw horizontal lines (receding into vp)
                 for (let r = 0; r <= HROWS; r++) {
-                    // Lines appear from bottom up
                     const t = r / HROWS;
-                    // y starts near bottom, converges toward vp
                     const y = vpY + (H * 1.1 - vpY) * (1 - t * 0.85);
-                    // alpha: lines near bottom are brighter, fade toward horizon
-                    const proximity = t; // 0=bottom, 1=horizon
+                    const proximity = t;
                     const baseAlpha = (1 - proximity) * 0.18 + 0.02;
                     const isAccent = r === Math.floor(pulse * HROWS * 0.4 + 1);
                     const alpha = isAccent ? 0.55 : baseAlpha;
                     const lw = isAccent ? 1.2 : (1 - proximity) * 0.9 + 0.3;
-
-                    // x extent narrows as we go toward horizon
                     const spread = (1 - proximity * 0.7);
-                    const x0 = W * (0.5 - spread * 0.7);
-                    const x1 = W * (0.5 + spread * 0.7);
-
-                    drawLine(x0, y, x1, y, alpha, lw, isAccent);
+                    drawLine(W * (0.5 - spread * 0.7), y, W * (0.5 + spread * 0.7), y, alpha, lw, isAccent);
                 }
 
-                // Draw vertical lines fanning from vanishing point
                 for (let c = 0; c <= VCOLS; c++) {
-                    const t = c / VCOLS; // 0..1
-                    // spread fan across bottom
+                    const t = c / VCOLS;
                     const bx = W * (t * 1.1 - 0.05);
                     const by = H * 1.05;
-
-                    const distFromCenter = Math.abs(t - 0.5) * 2; // 0=center, 1=edge
+                    const distFromCenter = Math.abs(t - 0.5) * 2;
                     const baseAlpha = (1 - distFromCenter * 0.7) * 0.12 + 0.02;
-
-                    // Accent travels as a sweep
                     const sweepT = (Math.sin(phase * 0.7 + c * 0.3) * 0.5 + 0.5);
                     const isAccent = Math.abs(t - sweepT) < 0.04;
                     const alpha = isAccent ? 0.5 : baseAlpha;
                     const lw = isAccent ? 1.1 : 0.5;
-
                     drawLine(vpX, vpY, bx, by, alpha, lw, isAccent);
                 }
 
-                // Subtle horizon glow line
                 const horizonY = vpY;
                 const gradH = ctx.createLinearGradient(0, horizonY, W, horizonY);
-                gradH.addColorStop(0, 'rgba(200,255,0,0)');
+                gradH.addColorStop(0,   'rgba(200,255,0,0)');
                 gradH.addColorStop(0.3, `rgba(200,255,0,${0.06 + pulse * 0.06})`);
                 gradH.addColorStop(0.5, `rgba(200,255,0,${0.12 + pulse * 0.08})`);
                 gradH.addColorStop(0.7, `rgba(200,255,0,${0.06 + pulse * 0.06})`);
-                gradH.addColorStop(1, 'rgba(200,255,0,0)');
+                gradH.addColorStop(1,   'rgba(200,255,0,0)');
                 ctx.beginPath();
                 ctx.moveTo(0, horizonY);
                 ctx.lineTo(W, horizonY);
