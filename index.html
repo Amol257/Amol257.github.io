@@ -2224,10 +2224,13 @@
             // The scanline is now handled by an infinite CSS animation for a smoother experience
         }
 
+        let isUpdating = false;
         function updateDashboard(index) {
+            if (isUpdating) return;
             const data = dashboardData[index];
             if (!data) return;
 
+            isUpdating = true;
             // Trigger scan animation
             triggerScanline();
 
@@ -2273,10 +2276,16 @@
                 `).join('');
 
                 dbContent.classList.remove('changing');
+                isUpdating = false;
             }, 200);
         }
 
         $$('.project-row').forEach((row, idx) => {
+            // High-fidelity mobile response: Update dashboard on contact
+            row.addEventListener('touchstart', () => {
+                updateDashboard(idx);
+            }, { passive: true });
+
             row.addEventListener('click', () => {
                 updateDashboard(idx);
                 const isOpen = row.classList.contains('open');
