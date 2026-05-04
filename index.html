@@ -12,6 +12,7 @@
             --bg: #000000;
             --ink: #f0ece4;
             --accent: #c8ff00;
+            --accent-rgb: 200, 255, 0;
             --dim: #141414;
             --muted: #404040;
             --border: rgba(240, 236, 228, 0.08);
@@ -19,6 +20,83 @@
             --font-mono: 'DM Mono', monospace;
             --font-serif: 'Fraunces', serif;
         }
+
+        [data-theme="light"] {
+            --bg: #f5f0e8;
+            --ink: #1a1208;
+            --accent: #8a5a00;
+            --accent-rgb: 138, 90, 0;
+            --dim: #ede5d0;
+            --muted: #6a5a2a;
+            --border: rgba(26, 18, 8, 0.12);
+        }
+
+        [data-theme="light"] body { background-color: #f5f0e8; background-image: none; }
+        [data-theme="light"] nav { background: rgba(245, 240, 232, 0.85); color: var(--ink); }
+        [data-theme="light"] #loader { background: #f5f0e8; }
+        [data-theme="light"] #grain { opacity: 0.03; }
+        [data-theme="light"] ::selection { background: var(--accent); color: #f5f0e8; }
+        [data-theme="light"] .bio-sub, 
+        [data-theme="light"] .project-story,
+        [data-theme="light"] .project-desc-right { color: rgba(26, 18, 8, 0.65) !important; }
+        [data-theme="light"] .building-content { color: var(--muted) !important; }
+        [data-theme="light"] .kpi-card { background: rgba(0,0,0,0.04); }
+        [data-theme="light"] .project-bg { display: none !important; }
+        [data-theme="light"] ::-webkit-scrollbar-track { background: #f5f0e8; }
+        [data-theme="light"] ::-webkit-scrollbar-thumb { background: var(--muted); }
+
+        [data-theme="light"] #scanlines {
+            background: linear-gradient(rgba(26, 18, 8, 0) 50%, rgba(26, 18, 8, 0.04) 50%),
+                        linear-gradient(90deg, rgba(138, 90, 0, 0.015), rgba(138, 90, 0, 0.008), rgba(138, 90, 0, 0.015));
+            opacity: 0.5;
+        }
+
+        /* DATA PIPELINE DIAGRAM FIXES */
+        [data-theme="light"] .pipeline-wrap svg rect { fill: var(--dim) !important; stroke: rgba(138, 90, 0, 0.4) !important; }
+        [data-theme="light"] .pipeline-wrap svg text { fill: var(--ink) !important; }
+        [data-theme="light"] .pipeline-wrap svg text[opacity="0.5"],
+        [data-theme="light"] .pipeline-wrap svg text[style*="opacity: 0.5"] { fill: var(--muted) !important; opacity: 1 !important; }
+        [data-theme="light"] .pipeline-wrap svg g[opacity="0.1"] path { stroke: rgba(138, 90, 0, 0.35) !important; opacity: 1 !important; }
+        [data-theme="light"] .pipeline-wrap svg rect[fill="var(--accent)"] { fill: var(--accent) !important; }
+        [data-theme="light"] .pipeline-wrap svg circle[stroke="var(--accent)"],
+        [data-theme="light"] .pipeline-wrap svg polygon[fill="var(--accent)"],
+        [data-theme="light"] .pipeline-wrap svg path[fill="var(--accent)"] { fill: var(--accent) !important; stroke: var(--accent) !important; }
+
+        /* DASHBOARD PANE FIXES */
+        [data-theme="light"] .dashboard-pane { background: rgba(237, 229, 208, 0.85) !important; border: 1px solid rgba(138, 90, 0, 0.2) !important; backdrop-filter: blur(10px); }
+        [data-theme="light"] .dashboard-header { background: rgba(138, 90, 0, 0.06) !important; }
+        [data-theme="light"] .map-panel, 
+        [data-theme="light"] .table-card, 
+        [data-theme="light"] .db-kpi-item { background: rgba(245, 240, 232, 0.9) !important; border: 1px solid rgba(138, 90, 0, 0.15) !important; }
+        [data-theme="light"] .kpi-label { color: var(--muted) !important; }
+        [data-theme="light"] .table-head { background: rgba(138, 90, 0, 0.08) !important; }
+        [data-theme="light"] .th-cell { color: var(--accent) !important; }
+        [data-theme="light"] .tr-row { border-bottom: 1px solid rgba(138, 90, 0, 0.08) !important; }
+        [data-theme="light"] .td-cell { color: var(--muted) !important; }
+        [data-theme="light"] .td-cell:last-child { color: var(--ink) !important; }
+        [data-theme="light"] .terminal-box { background: rgba(237, 229, 208, 0.6) !important; border: 1px solid rgba(138, 90, 0, 0.15) !important; }
+        [data-theme="light"] .dashboard-pane::before { background: linear-gradient(to bottom, transparent, rgba(138, 90, 0, 0.08), transparent) !important; }
+        [data-theme="light"] .india-fill { fill: #c8b890 !important; stroke: rgba(138, 90, 0, 0.4) !important; }
+        [data-theme="light"] .city-dot { fill: #8a5a00 !important; }
+        [data-theme="light"] .kpi-mini-bar-bg { background: rgba(138, 90, 0, 0.15) !important; }
+        [data-theme="light"] .kpi-mini-bar-fill { background: var(--accent) !important; }
+        [data-theme="light"] .db-sessions-value { color: var(--ink) !important; }
+        [data-theme="light"] .funnel-label { fill: var(--bg) !important; }
+        [data-theme="light"] .gauge-track { stroke: rgba(138, 90, 0, 0.15) !important; }
+        [data-theme="light"] .gauge-value { fill: var(--ink) !important; }
+
+        /* CONTACT HEADLINE GLOW */
+        [data-theme="light"] .contact-headline { text-shadow: 0 0 30px rgba(138, 90, 0, 0.3) !important; }
+        [data-theme="light"] .contact-headline:hover { color: var(--ink) !important; animation: amberGlowPulse 1.5s infinite alternate ease-in-out !important; }
+        [data-theme="light"] .marquee-divider { box-shadow: 0 0 20px rgba(138, 90, 0, 0.4); border-color: rgba(138, 90, 0, 0.2); }
+
+        /* THEME-AWARE GLOWS */
+        [data-theme="light"] .project-row:hover .project-name { text-shadow: 0 0 15px rgba(138, 90, 0, 0.45) !important; }
+        [data-theme="light"] .exp-row:hover .exp-company,
+        [data-theme="light"] .exp-row:hover .exp-role,
+        [data-theme="light"] .exp-row:hover .exp-id,
+        [data-theme="light"] .exp-row:hover .exp-date { text-shadow: 0 0 15px rgba(138, 90, 0, 0.4) !important; }
+        [data-theme="light"] .exp-quote strong { text-shadow: 0 0 10px rgba(138, 90, 0, 0.35) !important; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         html { scroll-behavior: smooth; }
@@ -146,6 +224,24 @@
         .nav-left { font-weight: 500; }
         .nav-right { display: flex; align-items: center; gap: 14px; white-space: nowrap; }
         .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
+        #theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--ink);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 0;
+            transition: color 0.3s;
+        }
+        #theme-toggle:hover { color: var(--accent); }
+
+        @media (max-width: 600px) {
+            #theme-toggle { font-size: 0; }
+            #theme-toggle::after { content: "[ ◑ ]"; font-size: 0.9rem; }
+        }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
         /* Section base */
@@ -283,6 +379,7 @@
             color: var(--accent);
         }
 
+
         .dashboard-status {
             font-family: var(--font-mono);
             font-size: 0.6rem;
@@ -303,6 +400,11 @@
         @keyframes pulse-dot {
             from { opacity: 0.3; }
             to { opacity: 1; }
+        }
+
+        @keyframes amberGlowPulse {
+            from { text-shadow: 0 0 20px rgba(138, 90, 0, 0.3), 0 0 40px rgba(138, 90, 0, 0.1); }
+            to   { text-shadow: 0 0 50px rgba(138, 90, 0, 0.55), 0 0 100px rgba(138, 90, 0, 0.2); }
         }
 
         .dashboard-content {
@@ -770,6 +872,19 @@
         .exp-company { font-family: var(--font-display); font-size: clamp(1.6rem, 3.5vw, 2.3rem); text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
         .exp-role { font-size: 0.85rem; color: var(--ink); transition: color 0.3s; }
         .exp-date { text-align: right; color: var(--muted); font-size: 0.8rem; transition: color 0.3s; }
+        .exp-toggle-hint {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: -15px 0 15px 85px;
+            transition: color 0.3s;
+        }
+        .exp-row:hover .exp-toggle-hint { color: var(--accent); }
+        .exp-row.active .exp-toggle-hint::after { content: ' [ - CLOSE ]'; }
+        .exp-row:not(.active) .exp-toggle-hint::after { content: ' [ + EXPAND ]'; }
+
         .exp-content {
             max-height: 0; overflow: hidden;
             background: var(--dim); padding: 0 60px;
@@ -786,6 +901,45 @@
         .tech-tags { display: flex; flex-wrap: wrap; gap: 10px; }
         .tag { border: 1px solid var(--border); padding: 7px 14px; font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; transition: border-color 0.2s; }
         .tag:hover { border-color: var(--accent); }
+
+        .exp-quote {
+            border-left: 2px solid var(--accent);
+            padding-left: 20px;
+            margin: 32px 0 24px 0;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+        .exp-quote strong {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(200, 255, 0, 0.4);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .building-section {
+            margin-top: 45px;
+            padding-top: 28px;
+            border-top: 1px dashed var(--border);
+        }
+        .building-title {
+            font-family: var(--font-mono);
+            font-size: 1.4rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+        .building-content {
+            font-family: var(--font-serif);
+            font-size: 1.05rem;
+            color: rgba(240,236,228,0.65);
+            line-height: 1.7;
+            max-width: 900px;
+        }
 
         /* Projects */
         .project-row {
@@ -815,7 +969,7 @@
             opacity: 0;
         }
         .project-row.open .project-desc {
-            max-height: 400px;
+            max-height: 1200px;
             opacity: 1;
         }
 
@@ -963,6 +1117,7 @@
             font-size: clamp(4rem, 15vw, 12rem); line-height: 0.85;
             letter-spacing: -4px; transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
             color: var(--accent);
+            text-shadow: 0 0 30px rgba(200, 255, 0, 0.4);
             cursor: pointer;
             position: relative;
         }
@@ -1100,6 +1255,7 @@
             }
             .exp-date { font-size: 0.7rem; }
             .exp-company { font-size: 1.5rem; }
+            .exp-toggle-hint { margin-left: 55px; }
             
             .edu-item {
                 grid-template-columns: 1fr auto;
@@ -1177,6 +1333,7 @@
         <div class="nav-left">AMOL SINGHAL</div>
         <div class="nav-right">
             <span>[ DATA ANALYST — OPEN TO WORK ]</span>
+            <button id="theme-toggle" aria-label="Toggle theme">[ LIGHT ]</button>
             <div class="dot"></div>
         </div>
     </nav>
@@ -1254,13 +1411,13 @@
             </p>
 
             <p class="bio-sub">
-                I build dashboards and data pipelines in Power BI, SQL and Excel that help teams make faster, clearer decisions. Most recently at NCRTC, my work fed directly into the PM-eBus Sewa national transport program. I also have a grounding in UI/UX from internships at Zidio and Internship Studio, so I approach data products with both analytical rigour and a designer's eye.
+                Most analysts hand over a report. I hand over a system. At NCRTC, I built the Power BI dashboards and reporting infrastructure that tracked live operations across one of India's largest public transport rollouts, cutting manual reporting time by 20-25%. Beyond BI, I build full data products: from a real-time national AQI tracker powered by Gemini AI across 511 stations, to eCommerce platforms shaped by Excel-driven UX analysis. Three internships, two live projects, one focus: turning raw data into decisions.
             </p>
 
             <div class="fact-list">
                 <div class="fact-item"><span class="arrow">→</span><span>B.Tech CSE (Data Science) · ABESIT · 2022–2026</span></div>
-                <div class="fact-item"><span class="arrow">→</span><span>Reduced NCRTC reporting time by 20-25% with automated Power BI pipelines</span></div>
-                <div class="fact-item"><span class="arrow">→</span><span>Dashboards live on a national government portal</span></div>
+                <div class="fact-item"><span class="arrow">→</span><span>Stack: Power BI · SQL · Python · React · DAX · Excel</span></div>
+                <div class="fact-item"><span class="arrow">→</span><span>Certified: Google GenAI · IBM Cloud · UX Design · Excel Analytics</span></div>
                 <div class="fact-item"><span class="arrow">→</span><span>Based in Ghaziabad · Open to remote and hybrid roles</span></div>
             </div>
 
@@ -1451,6 +1608,7 @@
                     <div class="exp-date">SEP–NOV 2025 · GHAZIABAD</div>
                 </div>
             </div>
+            <div class="exp-toggle-hint"></div>
             <div class="exp-content">
                 <ul class="exp-bullets">
                     <li>Built KPI dashboards in <strong>Power BI with advanced DAX</strong> to monitor real-time operational metrics across the PM-eBus Sewa national fleet program.</li>
@@ -1458,6 +1616,11 @@
                     <li>Collaborated with Sr. GM/IT to redesign report layouts, improving <strong>stakeholder visibility</strong> into fleet KPIs for ministry-level reporting.</li>
                     <li>Performed <strong>data modeling and statistical analysis</strong> on multi-source operational data, surfacing actionable insights for bus deployment strategy.</li>
                 </ul>
+                <div class="exp-quote">
+                    <strong>[VERIFIED] · NCRTC Internship Certificate · Sr. GM/IT · Sep–Nov 2025</strong>
+                    Work delivered under supervision of Sr. GM/IT, NCRTC.<br>
+                    Output deployed on national government infrastructure for PM-eBus Sewa fleet monitoring.
+                </div>
                 <div class="tech-tags">
                     <span class="tag">Power BI</span>
                     <span class="tag">DAX</span>
@@ -1476,11 +1639,12 @@
                     <div class="exp-date">SEP–OCT 2024 · REMOTE</div>
                 </div>
             </div>
+            <div class="exp-toggle-hint"></div>
             <div class="exp-content">
                 <ul class="exp-bullets">
-                    <li>Developed a <strong>fully functional eCommerce website</strong> from scratch with responsive layouts, product pages, and checkout flow.</li>
-                    <li>Applied <strong>Excel pivot table analysis</strong> to user flow data, identifying drop-off points that informed UX decisions improving page engagement.</li>
-                    <li>Crafted wireframes and high-fidelity mockups in <strong>Adobe Photoshop</strong>, ensuring pixel-perfect brand consistency.</li>
+                    <li>Applied Excel pivot table analysis to user flow data, identifying drop-off points that directly shaped layout and checkout redesign decisions.</li>
+                    <li>Developed a fully functional eCommerce website with responsive product pages and checkout flow, built from scratch.</li>
+                    <li>Translated data insights into wireframes and high-fidelity mockups, ensuring every design decision was grounded in user behaviour analysis.</li>
                 </ul>
                 <div class="tech-tags">
                     <span class="tag">HTML / CSS</span>
@@ -1500,11 +1664,13 @@
                     <div class="exp-date">APR–JUL 2024 · REMOTE</div>
                 </div>
             </div>
+            <div class="exp-toggle-hint"></div>
             <div class="exp-content">
                 <ul class="exp-bullets">
-                    <li>Designed a <strong>data-driven weather analysis app in Figma</strong>, achieving a <strong>40% improvement in user comprehension</strong> during testing.</li>
-                    <li>Built interactive prototypes across multiple sprints in an <strong>Agile workflow</strong>, incorporating user feedback each cycle.</li>
-                    <li>Created a <strong>reusable design component library</strong> following WCAG accessibility guidelines, reducing development time in handoff.</li>
+                    <li>Designed a data-driven weather analysis app in Figma, improving user comprehension of forecast data by 40% during usability testing.</li>
+                    <li>
+Incorporated sprint-by-sprint user feedback in an Agile workflow, reducing total design revision cycles across the project lifecycle.</li>
+                    <li>Built a reusable component library following WCAG accessibility standards, cutting developer handoff time and ensuring consistent interfaces.</li>
                 </ul>
                 <div class="tech-tags">
                     <span class="tag">Figma</span>
@@ -1760,8 +1926,13 @@
                 <a href="https://www.educba.com/certificate/?c=SR7JA6VHZ" target="_blank" class="cert-chip cert-link">Graphic Design · EDUCBA · 2025 ↗</a>
                 <a href="https://courses.ibmmooc.skillsnetwork.site/certificates/45d8a6ba065e4a8b97fbf81a8c9a67ac" target="_blank" class="cert-chip cert-link">Cloud Computing · IBM · 2025 ↗</a>
                 <a href="https://www.futurelearn.com/certificates/jo94du2" target="_blank" class="cert-chip cert-link">UX Design · FutureLearn ↗</a>
-                <div class="cert-chip">Google Data Analytics · Coursera · In Progress</div>
-                <a href="https://drive.google.com/file/d/1pm19z5o6Wz4JiPJEAFsglL_nxd-4rWXO/view" target="_blank" class="cert-chip cert-link">NCRTC Internship Certificate ↗</a>
+                                <a href="https://drive.google.com/file/d/1pm19z5o6Wz4JiPJEAFsglL_nxd-4rWXO/view" target="_blank" class="cert-chip cert-link">NCRTC Internship Certificate ↗</a>
+            </div>
+            <div class="building-section">
+                <div class="building-title">[CURRENTLY_BUILDING]</div>
+                <div class="building-content">
+                    Currently completing the Google Data Analytics Professional Certificate on Coursera and exploring predictive modeling applications in public sector operations data.
+                </div>
             </div>
         </div>
     </section>
@@ -2117,12 +2288,12 @@
                                 </linearGradient>
                             </defs>
                             <!-- Gauge Background -->
-                            <path d="M 150 240 A 125 125 0 0 1 400 240" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="35" stroke-linecap="round"/>
+                            <path class="gauge-track" d="M 150 240 A 125 125 0 0 1 400 240" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="35" stroke-linecap="round"/>
                             <!-- Gauge Fill (Identical path, dash-limited) -->
                             <path d="M 150 240 A 125 125 0 0 1 400 240" fill="none" stroke="var(--accent)" stroke-width="35" stroke-linecap="round" stroke-dasharray="85 393"/>
                             
                             <!-- Value text -->
-                            <text x="275" y="215" fill="#fff" font-size="90" font-family="var(--font-display)" text-anchor="middle">102</text>
+                            <text x="275" y="215" class="gauge-value" fill="#fff" font-size="90" font-family="var(--font-display)" text-anchor="middle">102</text>
                             <text x="275" y="250" fill="var(--muted)" font-size="10" font-family="var(--font-mono)" letter-spacing="2" text-anchor="middle">PM 2.5 INDEX</text>
                             
                             <!-- Precise End dots -->
@@ -2174,18 +2345,18 @@
                         
                         <!-- Funnel Segments -->
                         <rect x="110" y="60" width="330" height="60" fill="rgba(var(--accent-rgb), 0.2)" />
-                        <text x="275" y="95" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">AWARENESS (100%)</text>
+                        <text x="275" y="95" class="funnel-label" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">AWARENESS (100%)</text>
                         
                         <rect x="150" y="130" width="250" height="60" fill="rgba(var(--accent-rgb), 0.3)" />
-                        <text x="275" y="165" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">INTEREST (42%)</text>
+                        <text x="275" y="165" class="funnel-label" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">INTEREST (42%)</text>
                         
                         <rect x="190" y="200" width="170" height="60" fill="rgba(var(--accent-rgb), 0.4)" />
-                        <text x="275" y="235" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">DESIRE (18%)</text>
+                        <text x="275" y="235" class="funnel-label" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">DESIRE (18%)</text>
                         
                         <rect x="220" y="270" width="110" height="60" fill="rgba(var(--accent-rgb), 0.6)" />
-                        <text x="275" y="305" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">ACTION (3.2%)</text>
+                        <text x="275" y="305" class="funnel-label" fill="#fff" font-size="12" font-family="var(--font-mono)" text-anchor="middle">ACTION (3.2%)</text>
                       </svg>`,
-                overlay: `<div><div class="stat-label">Conversion Rate</div><div class="stat-val-small">3.2%</div></div><div style="text-align:right"><div class="stat-label">Sessions</div><div class="stat-val-small" style="color:#fff">12.4k</div></div>`,
+                overlay: `<div><div class="stat-label">Conversion Rate</div><div class="stat-val-small">3.2%</div></div><div style="text-align:right"><div class="stat-label">Sessions</div><div class="stat-val-small db-sessions-value" style="color:#fff">12.4k</div></div>`,
                 kpis: [
                     { label: "Add to Cart", value: "14.2%", percent: 14 },
                     { label: "Checkout", value: "8.5%", percent: 8 }
@@ -2348,6 +2519,36 @@
                 }, 2000);
             });
         });
+
+        // ── THEME TOGGLE ──────────────────────────────────────────────────────
+        (function() {
+            const btn = document.getElementById('theme-toggle');
+            const root = document.documentElement;
+
+            const saved = localStorage.getItem('theme') || 'dark';
+            root.setAttribute('data-theme', saved);
+            if (btn) btn.textContent = saved === 'dark' ? '[ LIGHT ]' : '[ DARK ]';
+
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    const current = root.getAttribute('data-theme');
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    root.setAttribute('data-theme', next);
+                    localStorage.setItem('theme', next);
+                    btn.textContent = next === 'dark' ? '[ LIGHT ]' : '[ DARK ]';
+                });
+            }
+        })();
+
+        // Theme helper for canvas
+        function getThemeColors() {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            return {
+                base: isLight ? { r: 26, g: 18, b: 8 } : { r: 240, g: 236, b: 228 },
+                accent: isLight ? { r: 138, g: 90, b: 0 } : { r: 200, g: 255, b: 0 }
+            };
+        }
+
         // ── EFFECT 1: Floating Particle Network ──────────────────────────────
         (function() {
             const canvas = document.getElementById('canvas-particles');
@@ -2402,8 +2603,9 @@
                 const LINE_W      = mobile ? 0.8  : 0.8;
                 
                 // Targets for lerping
+                const theme = getThemeColors();
                 const targetAlpha = inSkills ? 0 : (inExperience ? 0.4 : (inHero ? 0.06 : 0.18));
-                const targetRGB   = inExperience ? { r: 200, g: 255, b: 0 } : { r: 240, g: 236, b: 228 };
+                const targetRGB   = inExperience ? theme.accent : theme.base;
 
                 // Smooth interpolation
                 currentAlpha += (targetAlpha - currentAlpha) * 0.05;
@@ -2443,8 +2645,9 @@
                     ctx.fill();
                     
                     if (inExperience) {
+                        const theme = getThemeColors();
                         ctx.shadowBlur = 25;
-                        ctx.shadowColor = 'rgba(200, 255, 0, 0.8)';
+                        ctx.shadowColor = `rgba(${theme.accent.r}, ${theme.accent.g}, ${theme.accent.b}, 0.8)`;
                     } else {
                         ctx.shadowBlur = 0;
                     }
@@ -2477,12 +2680,13 @@
             window.addEventListener('resize', resize);
 
             function drawLine(x1, y1, x2, y2, alpha, width, accent) {
+                const theme = getThemeColors();
                 ctx.beginPath();
                 ctx.moveTo(x1, y1);
                 ctx.lineTo(x2, y2);
                 ctx.strokeStyle = accent
-                    ? `rgba(200,255,0,${alpha})`
-                    : `rgba(240,236,228,${alpha})`;
+                    ? `rgba(${theme.accent.r},${theme.accent.g},${theme.accent.b},${alpha})`
+                    : `rgba(${theme.base.r},${theme.base.g},${theme.base.b},${alpha})`;
                 ctx.lineWidth = width;
                 ctx.stroke();
             }
@@ -2530,12 +2734,14 @@
                 }
 
                 const horizonY = vpY;
+                const theme = getThemeColors();
+                const accentStr = `${theme.accent.r},${theme.accent.g},${theme.accent.b}`;
                 const gradH = ctx.createLinearGradient(0, horizonY, W, horizonY);
-                gradH.addColorStop(0,   'rgba(200,255,0,0)');
-                gradH.addColorStop(0.3, `rgba(200,255,0,${0.06 + pulse * 0.06})`);
-                gradH.addColorStop(0.5, `rgba(200,255,0,${0.12 + pulse * 0.08})`);
-                gradH.addColorStop(0.7, `rgba(200,255,0,${0.06 + pulse * 0.06})`);
-                gradH.addColorStop(1,   'rgba(200,255,0,0)');
+                gradH.addColorStop(0,   `rgba(${accentStr},0)`);
+                gradH.addColorStop(0.3, `rgba(${accentStr},${0.06 + pulse * 0.06})`);
+                gradH.addColorStop(0.5, `rgba(${accentStr},${0.12 + pulse * 0.08})`);
+                gradH.addColorStop(0.7, `rgba(${accentStr},${0.06 + pulse * 0.06})`);
+                gradH.addColorStop(1,   `rgba(${accentStr},0)`);
                 ctx.beginPath();
                 ctx.moveTo(0, horizonY);
                 ctx.lineTo(W, horizonY);
