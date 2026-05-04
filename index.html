@@ -226,21 +226,52 @@
         .dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0; }
         #theme-toggle {
             background: transparent;
-            border: none;
+            border: 1px solid transparent;
             color: var(--ink);
             font-family: var(--font-mono);
             font-size: 0.75rem;
             letter-spacing: 1px;
             text-transform: uppercase;
             cursor: pointer;
-            padding: 0;
-            transition: color 0.3s;
+            padding: 4px 10px;
+            transition: all 0.3s;
+            border-radius: 4px;
         }
-        #theme-toggle:hover { color: var(--accent); }
+        #theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
 
         @media (max-width: 600px) {
-            #theme-toggle { font-size: 0; }
-            #theme-toggle::after { content: "[ ◑ ]"; font-size: 0.9rem; }
+            #theme-toggle { 
+                font-size: 0 !important; 
+                padding: 0 !important;
+                width: 42px;
+                height: 42px;
+                border: 1.5px solid var(--accent);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(var(--accent-rgb), 0.12);
+                position: relative;
+                letter-spacing: 0 !important;
+            }
+            #theme-toggle::before {
+                content: "THEME";
+                font-size: 0.5rem;
+                position: absolute;
+                top: -14px;
+                left: 50%;
+                transform: translateX(-50%);
+                color: var(--accent);
+                letter-spacing: 1px;
+                white-space: nowrap;
+            }
+            #theme-toggle::after { 
+                content: "◑"; 
+                font-size: 1.3rem; 
+                color: var(--accent);
+                display: block;
+                line-height: 1;
+            }
         }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
 
@@ -1333,7 +1364,7 @@
         <div class="nav-left">AMOL SINGHAL</div>
         <div class="nav-right">
             <span>[ DATA ANALYST — OPEN TO WORK ]</span>
-            <button id="theme-toggle" aria-label="Toggle theme">[ LIGHT ]</button>
+            <button id="theme-toggle" aria-label="Toggle theme">[ LIGHT MODE ]</button>
             <div class="dot"></div>
         </div>
     </nav>
@@ -2527,7 +2558,7 @@ Incorporated sprint-by-sprint user feedback in an Agile workflow, reducing total
 
             const saved = localStorage.getItem('theme') || 'dark';
             root.setAttribute('data-theme', saved);
-            if (btn) btn.textContent = saved === 'dark' ? '[ LIGHT ]' : '[ DARK ]';
+            if (btn) btn.textContent = saved === 'dark' ? '[ LIGHT MODE ]' : '[ DARK MODE ]';
 
             if (btn) {
                 btn.addEventListener('click', () => {
@@ -2535,7 +2566,7 @@ Incorporated sprint-by-sprint user feedback in an Agile workflow, reducing total
                     const next = current === 'dark' ? 'light' : 'dark';
                     root.setAttribute('data-theme', next);
                     localStorage.setItem('theme', next);
-                    btn.textContent = next === 'dark' ? '[ LIGHT ]' : '[ DARK ]';
+                    btn.textContent = next === 'dark' ? '[ LIGHT MODE ]' : '[ DARK MODE ]';
                 });
             }
         })();
